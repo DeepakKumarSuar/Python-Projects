@@ -23,7 +23,7 @@ wait_timer_handle = None
 # Score tracking
 scores = {"X": 0, "O": 0, "TIE": 0}
 
-# HTML Elements
+# HTML Elements (Accessed via js)
 document = js.document
 cells = [document.querySelector(f'[data-index="{i}"]') for i in range(9)]
 mode_selection_screen = document.getElementById("modeSelection")
@@ -76,7 +76,7 @@ async def delete_game_state(code):
         js.console.log(f"Storage delete error: {e}")
 
 async def poll_for_opponent():
-    """Poll storage to check for opponent moves"""
+    """Poll storage to check for opponent moves or disconnects"""
     global game_active, waiting_for_opponent, is_my_turn, current_player
     
     if not waiting_for_opponent or not game_active or mode != 'online':
@@ -186,12 +186,12 @@ def update_move_timer(remaining_seconds):
         handle_move_timeout()
 
 def start_move_timer():
-    """Starts the 20-second timer for the current player's move"""
+    """Starts the 30-second timer for the current player's move"""
     if game_active:
         if mode == 'online' and is_my_turn:
-            update_move_timer(20)
+            update_move_timer(30)
         elif mode == 'local':
-            update_move_timer(20)
+            update_move_timer(30)
 
 def handle_move_timeout():
     """Executed when a player runs out of time"""
@@ -288,7 +288,8 @@ def set_turn_display():
             turn_indicator.className = "turn-indicator x-turn" if my_player_symbol == 'X' else "turn-indicator o-turn"
         else:
             status_text.textContent = "Opponent's turn"
-            turn_indicator.className = "turn-indicator o-turn" if current_player == 'O' else "turn-indicator x-turn"
+            # Show the symbol of the player whose turn it *is* according to current_player
+            turn_indicator.className = "turn-indicator x-turn" if current_player == 'X' else "turn-indicator o-turn"
     elif current_player == 'X':
         status_text.textContent = "Player 1's turn (X)"
         turn_indicator.className = "turn-indicator x-turn"
@@ -490,7 +491,7 @@ def execute_ai_move():
     """Execute the AI's chosen move"""
     empty_cells = get_empty_cells()
     
-    # Try to win
+    # Try to win (O)
     for i in empty_cells:
         board[i] = 'O'
         for condition in WINNING_CONDITIONS:
@@ -502,7 +503,7 @@ def execute_ai_move():
                 return
         board[i] = ''
     
-    # Try to block
+    # Try to block (X)
     for i in empty_cells:
         board[i] = 'X'
         for condition in WINNING_CONDITIONS:
@@ -564,7 +565,7 @@ async def start_matchmaking_async():
     state = await get_game_state(game_code)
     
     if state and state.get('player1') and not state.get('player2'):
-        # Join existing game as player 2
+        # Join existing game as player 2 (O)
         my_player_symbol = 'O'
         state['player2'] = 'O'
         await save_game_state(game_code, state)
@@ -579,7 +580,7 @@ async def start_matchmaking_async():
         start_new_game()
         
     elif not state or not state.get('player1'):
-        # Create new game as player 1
+        # Create new game as player 1 (X)
         my_player_symbol = 'X'
         state = {
             'player1': 'X',
@@ -600,18 +601,26 @@ async def start_matchmaking_async():
         document.getElementById("connectBtn").disabled = False
 
 async def wait_for_opponent():
-    """Wait for second player to join"""
-    global game_active, is_my_turn, waiting_for_opponent
+    """Wait for second player to join (FIXED LOGIC)"""
+    global game_active, is_my_turn, waiting_for_opponent, current_player, my_player_symbol
     
-    for i in range(20):
+    # 30-second timeout loop
+    for i in range(30):
         await asyncio.sleep(1)
-        wait_timer_display.textContent = f"Time remaining: {20 - i} seconds."
+        wait_timer_display.textContent = f"Time remaining: {30 - i} seconds."
         
         state = await get_game_state(game_code)
+        
+        # Check for opponent join (player2)
         if state and state.get('player2'):
-            # Opponent joined
+            # Opponent joined!
             matchmaking_status.textContent = "Match Found! Starting Game..."
+            wait_timer_display.textContent = ""
+            
+            # Initialize Player 1 state correctly
             game_active = True
+            my_player_symbol = 'X'
+            current_player = 'X'
             is_my_turn = True
             waiting_for_opponent = False
             
@@ -619,8 +628,8 @@ async def wait_for_opponent():
             switch_screen('game')
             start_new_game()
             return
-    
-    # Timeout
+            
+    # Timeout logic
     matchmaking_status.textContent = "Matchmaking timed out. No opponent found."
     wait_timer_display.textContent = ""
     game_code_input.disabled = False
