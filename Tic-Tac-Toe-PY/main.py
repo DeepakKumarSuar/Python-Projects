@@ -56,8 +56,8 @@ async def connect_websocket():
     ws = js.WebSocket.new(url)
     
     # Wait for the connection to open
-    await asyncio.Future(js.window.setTimeout(lambda: None, 0))
-    while ws.readyState == 0: await asyncio.sleep(0.1) # CONNECTING
+    while ws.readyState == 0:  # CONNECTING
+        await asyncio.sleep(0.1)
     
     if ws.readyState != 1: # OPEN
         js.console.error("WebSocket failed to connect.")
@@ -570,4 +570,5 @@ def setup_event_listeners():
 setup_event_listeners()
 update_scores()
 print("Tic-Tac-Toe loaded successfully!")
+
 
