@@ -51,9 +51,7 @@ async def connect_websocket():
         return
     
     # Constructing the WebSocket URL for the current host
-    protocol = "ws" if js.window.location.protocol == "http:" else "wss"
-    host = js.window.location.host
-    url = f"{protocol}://{host}"
+    url = "wss://tic-tac-toe-backend-vynh.onrender.com"
     
     ws = js.WebSocket.new(url)
     
@@ -572,3 +570,4 @@ def setup_event_listeners():
 setup_event_listeners()
 update_scores()
 print("Tic-Tac-Toe loaded successfully!")
+
