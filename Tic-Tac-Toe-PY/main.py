@@ -47,26 +47,26 @@ WINNING_CONDITIONS = [
 
 async def connect_websocket():
     global ws
-    if ws and ws.readyState == 1: # 1 means OPEN
-        return
-    
-    # Constructing the WebSocket URL for the current host
-    url ="wss://web-production-08d84.up.railway.app/play"
-    
+
+    if ws and ws.readyState == 1:
+        return ws
+
+    url = "wss://web-production-08d84.up.railway.app"
+
     ws = js.WebSocket.new(url)
-    
-    # Wait for the connection to open
-    while ws.readyState == 0:  # CONNECTING
+
+    # wait until open
+    while ws.readyState == 0:
         await asyncio.sleep(0.1)
-    
-    if ws.readyState != 1: # OPEN
+
+    if ws.readyState != 1:
         js.console.error("WebSocket failed to connect.")
         return None
-        
+
     ws.onmessage = create_proxy(handle_server_message)
-    ws.onclose = create_proxy(lambda e: js.console.log("WebSocket Closed:", e))
-    ws.onerror = create_proxy(lambda e: js.console.error("WebSocket Error:", e))
-    
+    ws.onclose = create_proxy(lambda e: js.console.log("WS Closed"))
+    ws.onerror = create_proxy(lambda e: js.console.error("WS Error"))
+
     return ws
 
 async def send_to_server(type, data={}):
