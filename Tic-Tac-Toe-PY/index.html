@@ -1,29 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Tic-Tac-Toe Game</title>
+    <title>Tic-Tac-Toe Online</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Pacifico&display=swap" rel="stylesheet">
+    
     <style>
-        /* CSS content */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             min-height: 100vh;
             overflow-x: hidden;
         }
-
+        
         /* Screen Management */
         .screen {
             display: none;
@@ -32,17 +24,16 @@
             justify-content: center;
             padding: 20px;
         }
-
-        .screen.active {
-            display: flex;
+        .screen.active { display: flex; }
+        
+        /* Backgrounds */
+        #modeSelection, #matchmakingScreen {
+            background: linear-gradient(135deg, #ec4899 0%, #7c3aed 50%, #4f46e5 100%);
         }
-
-        /* Mode Selection Screen */
-        #modeSelection,
-        #matchmakingScreen {
-            background: linear-gradient(135deg,#ec4899 0% , #7c3aed 50%,#4f46e5 100% );
+        #gameScreen {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
         }
-
+        
         .container {
             background: rgba(32, 5, 5, 0.763);
             border-radius: 30px;
@@ -54,11 +45,9 @@
             text-align: center;
             position: relative;
         }
-
-        .game-header {
-            margin-bottom: 40px;
-        }
-
+        
+        .game-header { margin-bottom: 40px; }
+        
         .game-icon-image {
             width: 120px;
             height: 120px;
@@ -66,26 +55,23 @@
             margin-bottom: 20px;
             border-radius: 0;
         }
-
+        
         .game-header h1 {
             font-size: 3rem;
             color: #e4d9d9;
             margin-bottom: 10px;
             font-weight: bold;
         }
-
-        .game-header p {
-            color: #666;
-            font-size: 1.1rem;
-        }
-
+        
+        .game-header p { color: #666; font-size: 1.1rem; }
+        
         .mode-buttons {
             display: flex;
             flex-direction: column;
             gap: 20px;
             margin-bottom: 30px;
         }
-
+        
         .mode-btn {
             width: 100%;
             padding: 20px 30px;
@@ -101,13 +87,11 @@
             gap: 15px;
             transition: all 0.3s ease;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-            /* Liquid Fill Setup */
             position: relative;
             overflow: hidden;
             z-index: 1;
         }
-
-        /* Liquid Fill Pseudo-element */
+        
         .mode-btn::before {
             content: '';
             position: absolute;
@@ -120,30 +104,17 @@
             transition: transform 0.3s ease;
             z-index: -1;
         }
-
+        
         .mode-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
         }
-
-        /* Liquid Fill Hover State */
-        .mode-btn:hover::before {
-            transform: translateY(0);
-        }
-
-        .single-player {
-            background: linear-gradient(135deg, #00b4db, #0083b0);
-        }
-
-        .two-player {
-            background: linear-gradient(135deg, #11998e, #38ef7d);
-        }
-
-        .mode-btn:nth-child(3) {
-            background: linear-gradient(135deg, #fc691a, #f7b733);
-        }
-
-        /* Footer credit styling */
+        .mode-btn:hover::before { transform: translateY(0); }
+        
+        .single-player { background: linear-gradient(135deg, #00b4db, #0083b0); }
+        .two-player   { background: linear-gradient(135deg, #11998e, #38ef7d); }
+        .mode-btn:nth-child(3) {background: linear-gradient(135deg, #fc691a, #f7b733);}
+        /* Footer credit */
         .credit-footer {
             margin-top: 30px;
             position: absolute;
@@ -154,44 +125,34 @@
             font-size: 0.95rem;
             color: #888;
             font-family: 'Dancing Script', cursive;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
-
         .credit-footer::before {
             content: '';
             display: block;
             width: 60%;
             height: 1px;
-            background-color: #eee;
-            margin-bottom: 10px;
+            background-color: rgba(255,255,255,0.2);
+            margin: 0 auto 10px;
         }
-
         .credit-footer span {
             font-weight: bold;
             color: #a5aa08;
             font-family: 'Pacifico', cursive;
         }
-
-        /* Game Screen */
-        #gameScreen {
-            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
-        }
-
+        
+        /* Game Screen container */
         .game-container {
             max-width: 600px;
-            align-content: center;
             background: linear-gradient(45deg, #ec489ad0 0%, #b286ff 50%, #6e66ff 100%);
         }
-
+        
         .game-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
         }
-
+        
         .back-btn {
             background: none;
             border: none;
@@ -202,22 +163,18 @@
             border-radius: 8px;
             transition: all 0.3s ease;
         }
-
         .back-btn:hover {
             color: #333;
             background: #f3f4f6;
         }
-
+        
         .game-nav h1 {
             font-size: 1.5rem;
             color: #aea3a3;
             font-weight: bold;
         }
-
-        .spacer {
-            width: 60px;
-        }
-
+        .spacer { width: 60px; }
+        
         /* Scoreboard */
         .scoreboard {
             display: flex;
@@ -225,81 +182,50 @@
             gap: 40px;
             margin-bottom: 30px;
         }
-
-        .score-item {
-            text-align: center;
-        }
-
+        .score-item { text-align: center; }
         .score-value {
             font-size: 2rem;
             font-weight: bold;
             margin-bottom: 5px;
-            text-align: center;
         }
-
-        .x-score {
-            color: #3b82f6;
-        }
-
-        .o-score {
-            color: #ef4444;
-        }
-
-        .tie-score {
-            color: #6b7280;
-        }
-
-        .score-label {
-            font-size: 0.9rem;
-            color: #d6d6d6;
-        }
-
-        /* Game Status */
-        .game-status {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
+        .x-score  { color: #3b82f6; }
+        .o-score  { color: #ef4444; }
+        .tie-score { color: #6b7280; }
+        .score-label { font-size: 0.9rem; color: #d6d6d6; }
+        
+        /* Status */
+        .game-status { text-align: center; margin-bottom: 30px; }
         .status-indicator {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
         }
-
         .turn-indicator {
             width: 24px;
             height: 24px;
             border-radius: 50%;
             transition: all 0.3s ease;
         }
-
-        .x-turn {
-            background: #3b82f6;
-        }
-
-        .o-turn {
-            background: #ef4444;
-        }
-
+        .x-turn { background: #3b82f6; }
+        .o-turn { background: #ef4444; }
         .status-indicator span {
             font-size: 1.2rem;
             font-weight: 600;
             color: #333;
         }
-
-        /* Game Board */
+        
+        /* Board */
         .game-board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
             margin-bottom: 30px;
-            justify-content: center;
             max-width: 320px;
             margin-left: auto;
             margin-right: auto;
         }
-
+        
         .cell {
             width: 96px;
             height: 96px;
@@ -315,41 +241,33 @@
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.512);
         }
-
+        
         .cell:hover:not(:disabled) {
             background: #f9fafb;
             transform: scale(1.05);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
-
         .cell.x {
             color: #3b82f6;
             animation: cellPulse 0.3s ease;
         }
-
         .cell.o {
             color: #ef4444;
             animation: cellBounce 0.3s ease;
         }
-
         .cell.winning {
             background: #dcfce7;
             border-color: #16a34a;
             animation: winningCell 0.5s ease;
         }
-
-        .cell:disabled {
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        /* Action Buttons */
+        .cell:disabled { cursor: not-allowed; opacity: 0.7; }
+        
+        /* Action buttons */
         .action-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
         }
-
         .action-btn {
             padding: 12px 24px;
             border: none;
@@ -361,28 +279,24 @@
             gap: 8px;
             transition: all 0.3s ease;
         }
-
         .new-game {
             background: #3b82f6;
             color: white;
         }
-
         .new-game:hover {
             background: #2563eb;
             transform: translateY(-2px);
         }
-
         .reset-scores {
             background: #6b7280;
             color: white;
         }
-
         .reset-scores:hover {
             background: #4b5563;
             transform: translateY(-2px);
         }
-
-        /* Thinking Animation */
+        
+        /* Thinking animation */
         .thinking-animation {
             position: fixed;
             top: 50%;
@@ -397,27 +311,20 @@
             gap: 10px;
             z-index: 1000;
         }
-
-        .thinking-animation.hidden {
-            display: none;
-        }
-
+        .thinking-animation.hidden { display: none; }
         .thinking-animation i {
             color: #ef4444;
             font-size: 1.5rem;
             animation: robotBlink 1s infinite;
         }
-
         .thinking-animation span {
             font-weight: 600;
             color: #333;
         }
-
         .dots {
             display: flex;
             gap: 3px;
         }
-
         .dots span {
             width: 6px;
             height: 6px;
@@ -425,16 +332,10 @@
             border-radius: 50%;
             animation: dotBounce 1.4s infinite ease-in-out;
         }
-
-        .dots span:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-
-        .dots span:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-
-        /* Celebration */
+        .dots span:nth-child(1) { animation-delay: -0.32s; }
+        .dots span:nth-child(2) { animation-delay: -0.16s; }
+        
+        /* Celebration overlay */
         .celebration {
             position: fixed;
             top: 0;
@@ -447,11 +348,8 @@
             justify-content: center;
             z-index: 1001;
         }
-
-        .celebration.hidden {
-            display: none;
-        }
-
+        .celebration.hidden { display: none; }
+        
         .celebration-content {
             background: white;
             padding: 50px;
@@ -460,21 +358,19 @@
             position: relative;
             overflow: hidden;
         }
-
         .celebration-icon {
             font-size: 4rem;
             color: #fbbf24;
             margin-bottom: 20px;
             animation: trophySpin 2s ease-in-out;
         }
-
         .celebration-content h2 {
             font-size: 2.5rem;
             color: #333;
             margin-bottom: 20px;
         }
-
-        /* Confetti Animation */
+        
+        /* Confetti */
         .confetti {
             position: absolute;
             top: 0;
@@ -484,7 +380,6 @@
             overflow: hidden;
             pointer-events: none;
         }
-
         .confetti-piece {
             position: absolute;
             width: 10px;
@@ -492,251 +387,168 @@
             background: #fbbf24;
             animation: confettiFall 3s linear infinite;
         }
-
         .confetti-piece:nth-child(1) {
             left: 10%;
             animation-delay: 0s;
             background: #ef4444;
         }
-
         .confetti-piece:nth-child(2) {
             left: 30%;
             animation-delay: 0.5s;
             background: #3b82f6;
         }
-
         .confetti-piece:nth-child(3) {
             left: 50%;
             animation-delay: 1s;
             background: #10b981;
         }
-
         .confetti-piece:nth-child(4) {
             left: 70%;
             animation-delay: 1.5s;
             background: #8b5cf6;
         }
-
         .confetti-piece:nth-child(5) {
             left: 90%;
             animation-delay: 2s;
             background: #f59e0b;
         }
-
+        
+        /* Input */
+        input[type="number"] {
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 100%;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+        
         /* Animations */
         @keyframes cellPulse {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.1);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
-
         @keyframes cellBounce {
-            0% {
-                transform: scale(1) rotate(0deg);
-            }
-
-            50% {
-                transform: scale(1.1) rotate(5deg);
-            }
-
-            100% {
-                transform: scale(1) rotate(0deg);
-            }
+            0% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
         }
-
         @keyframes winningCell {
-            0% {
-                transform: scale(1);
-            }
-
-            50% {
-                transform: scale(1.15);
-            }
-
-            100% {
-                transform: scale(1);
-            }
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
         }
-
         @keyframes robotBlink {
-
-            0%,
-            50% {
-                opacity: 1;
-            }
-
-            51%,
-            100% {
-                opacity: 0.3;
-            }
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0.3; }
         }
-
         @keyframes dotBounce {
-
-            0%,
-            80%,
-            100% {
-                transform: scale(0);
-            }
-
-            40% {
-                transform: scale(1);
-            }
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
         }
-
         @keyframes trophySpin {
-            0% {
-                transform: rotate(0deg) scale(0.5);
-            }
-
-            50% {
-                transform: rotate(180deg) scale(1.1);
-            }
-
-            100% {
-                transform: rotate(360deg) scale(1);
-            }
+            0%   { transform: rotate(0deg) scale(0.5); }
+            50%  { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
         }
-
         @keyframes confettiFall {
             0% {
                 transform: translateY(-100vh) rotate(0deg);
                 opacity: 1;
             }
-
             100% {
                 transform: translateY(100vh) rotate(360deg);
                 opacity: 0;
             }
         }
-
-        /* Responsive Design */
+        
+        /* Responsive */
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
                 padding-bottom: 60px;
-                /* Adjusted for credit footer on smaller screens */
                 margin: 10px;
             }
-
-            .game-header h1 {
-                font-size: 2rem;
-            }
-
+            .game-header h1 { font-size: 2rem; }
             .game-icon-image {
                 width: 100px;
                 height: 100px;
             }
-
             .cell {
                 width: 80px;
                 height: 80px;
                 font-size: 2rem;
             }
-
-            .scoreboard {
-                gap: 20px;
-            }
-
-            .score-value {
-                font-size: 1.5rem;
-            }
-
-            .action-buttons {
-                flex-direction: column;
-            }
-
+            .scoreboard { gap: 20px; }
+            .score-value { font-size: 1.5rem; }
+            .action-buttons { flex-direction: column; }
             .celebration-content {
                 padding: 30px;
                 margin: 20px;
             }
-
-            .celebration-content h2 {
-                font-size: 2rem;
-            }
+            .celebration-content h2 { font-size: 2rem; }
         }
-
         @media (max-width: 480px) {
             .cell {
                 width: 70px;
                 height: 70px;
                 font-size: 1.8rem;
             }
-
-            .game-board {
-                gap: 8px;
-            }
+            .game-board { gap: 8px; }
         }
     </style>
 </head>
 
 <body>
-
+    <!-- Mode Selection Screen -->
     <div id="modeSelection" class="screen active">
         <div class="container">
             <div class="game-header">
-
+                <!-- Use your JPEG like old project -->
                 <img src="TTT_Img.jpeg" alt="Tic-Tac-Toe Icon" class="game-icon-image">
                 <h1>Tic-Tac-Toe</h1>
                 <p>Choose your game mode</p>
             </div>
-
             <div class="mode-buttons">
                 <button id="singlePlayerBtn" class="mode-btn single-player">
-                    <i class="fas fa-user"></i>
-                    You vs Computer
-                    <i class="fas fa-robot"></i>
+                    <i class="fas fa-user"></i> You vs Computer
                 </button>
-
                 <button id="onlineFriendBtn" class="mode-btn two-player">
-                    <i class="fas fa-globe"></i>
-                    vs Friend (Online)
+                    <i class="fas fa-globe"></i> vs Friend (Online)
                 </button>
-
                 <button id="localTwoPlayerBtn" class="mode-btn two-player">
-                    <i class="fas fa-users"></i>
-                    Local Two Players
+                    <i class="fas fa-users"></i> Local Two Players
                 </button>
             </div>
-
             <div class="credit-footer">
                 Created by <span>Deepak</span>
             </div>
         </div>
     </div>
 
+    <!-- Matchmaking Screen -->
     <div id="matchmakingScreen" class="screen">
         <div class="container">
             <div class="game-nav">
                 <button id="matchmakingBackBtn" class="back-btn">
                     <i class="fas fa-arrow-left"></i> Back
                 </button>
-                <h1 id="matchmakingTitle">Connect to a Friend</h1>
+                <h1>Connect to a Friend</h1>
                 <div class="spacer"></div>
             </div>
-
-            <p style="margin-bottom: 20px; color: #666;">Enter a number from 0-100 to join with your friend.</p>
-
-            <input type="number" id="gameCodeInput" placeholder="Enter Game Code (0-100)" min="0" max="100"
-                style="padding: 10px; border-radius: 8px; border: 1px solid #ccc; width: 100%; margin-bottom: 20px;">
-
+            <p style="margin-bottom: 20px; color: #666;">
+                Enter 0 - 100 to create a room, or enter your friend's code to join.
+            </p>
+            <input type="number" id="gameCodeInput" placeholder="Enter code (0-100)" min="0" max="100">
             <button id="connectBtn" class="action-btn new-game" style="width: 100%; margin-bottom: 15px;">
                 <i class="fas fa-handshake"></i> Connect
             </button>
-
             <div id="matchmakingStatus" style="font-weight: 600; color: #3b82f6;">Ready to connect...</div>
-            <div id="waitTimer" style="font-size: 0.9rem; color: #ef4444; margin-top: 10px;"></div>
         </div>
     </div>
 
+    <!-- Game Screen -->
     <div id="gameScreen" class="screen">
         <div class="container game-container">
             <div class="game-nav">
@@ -783,8 +595,7 @@
 
             <div class="action-buttons">
                 <button id="newGameBtn" class="action-btn new-game">
-                    <i class="fas fa-redo"></i>
-                    New Game
+                    <i class="fas fa-redo"></i> New Game
                 </button>
                 <button id="resetScoresBtn" class="action-btn reset-scores">
                     Reset Scores
@@ -793,38 +604,516 @@
         </div>
     </div>
 
+    <!-- Thinking animation -->
     <div id="thinkingAnimation" class="thinking-animation hidden">
         <i class="fas fa-robot"></i>
         <span>Computer is thinking...</span>
         <div class="dots">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
     </div>
 
+    <!-- Celebration overlay -->
     <div id="celebration" class="celebration hidden"></div>
 
     <script src="https://cdn.jsdelivr.net/pyodide/v0.23.4/full/pyodide.js"></script>
     <script>
+        // Inline Python code (Pyodide)
+        const pythonCode = `
+import js
+from pyodide.ffi import create_proxy
+import random
+import asyncio
+
+# Global state
+board = [""] * 9
+current_player = "X"
+game_active = False
+mode = None          # 'single', 'local', 'online'
+ws = None
+room_code = None
+is_my_turn = False
+my_player_symbol = "X"
+move_timer_handle = None
+scores = {"X": 0, "O": 0, "TIE": 0}
+
+document = js.document
+cells = [document.querySelector(f'[data-index="{i}"]') for i in range(9)]
+mode_selection_screen = document.getElementById("modeSelection")
+matchmaking_screen = document.getElementById("matchmakingScreen")
+game_screen = document.getElementById("gameScreen")
+game_code_input = document.getElementById("gameCodeInput")
+matchmaking_status = document.getElementById("matchmakingStatus")
+x_label = document.getElementById("xLabel")
+o_label = document.getElementById("oLabel")
+game_title = document.getElementById("gameTitle")
+status_text = document.getElementById("statusText")
+turn_indicator = document.getElementById("turnIndicator")
+thinking_animation = document.getElementById("thinkingAnimation")
+celebration_div = document.getElementById("celebration")
+
+WINNING_CONDITIONS = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+]
+
+# --- WebSocket ---
+
+async def connect_websocket():
+    global ws
+    if ws and ws.readyState == 1:
+        return ws
+    
+    # Railway WebSocket URL (no /play)
+    url = "wss://web-production-08d84.up.railway.app"
+    ws = js.WebSocket.new(url)
+    
+    retry = 0
+    while ws.readyState == 0 and retry < 50:
+        await asyncio.sleep(0.1)
+        retry += 1
+    
+    if ws.readyState != 1:
+        js.console.error(f"WebSocket failed: {ws.readyState}")
+        return None
+    
+    ws.onmessage = create_proxy(handle_server_message)
+    ws.onclose = create_proxy(handle_websocket_close)
+    ws.onerror = create_proxy(handle_websocket_error)
+    js.console.log("WebSocket connected!")
+    return ws
+
+async def send_to_server(msg_type, data=None):
+    global ws
+    if not ws or ws.readyState != 1:
+        return False
+    try:
+        message = js.JSON.stringify({'type': msg_type, 'data': data or {}})
+        ws.send(message)
+        return True
+    except Exception as e:
+        js.console.error(f"Send error: {e}")
+        return False
+
+def handle_websocket_close(event=None):
+    global ws
+    ws = None
+    matchmaking_status.textContent = "Connection lost."
+
+def handle_websocket_error(event=None):
+    matchmaking_status.textContent = "Connection error."
+
+def handle_server_message(event):
+    global room_code, my_player_symbol, is_my_turn, current_player, game_active
+    try:
+        msg = js.JSON.parse(event.data)
+        msg_type = msg.type
+        data = msg.data
+    except Exception as e:
+        js.console.error(f"Parse error: {e}")
+        return
+    
+    if msg_type == 'room_created':
+        room_code = data.code
+        my_player_symbol = 'X'
+        matchmaking_status.textContent = f"Code: {room_code}. Waiting..."
+    
+    elif msg_type == 'opponent_joined':
+        game_active = True
+        is_my_turn = True
+        js.setTimeout(create_proxy(lambda: switch_screen('game')), 500)
+        js.setTimeout(create_proxy(start_new_game), 600)
+    
+    elif msg_type == 'room_joined':
+        room_code = data.code
+        my_player_symbol = 'O'
+        game_active = True
+        is_my_turn = False
+        js.setTimeout(create_proxy(lambda: switch_screen('game')), 500)
+        js.setTimeout(create_proxy(start_new_game), 600)
+    
+    elif msg_type == 'game_move':
+        make_opponent_move(data.index, data.player)
+    
+    elif msg_type == 'turn_switch':
+        current_player = data.player
+        is_my_turn = (current_player == my_player_symbol)
+        set_turn_display()
+        if is_my_turn:
+            start_move_timer()
+    
+    elif msg_type in ('game_win', 'game_tie'):
+        if data.get('index') is not None:
+            make_opponent_move(data['index'], data['player'])
+        game_active = False
+        cancel_timers()
+        winner = data.get('winner')
+        if winner:
+            scores[winner] += 1
+            update_scores()
+            if msg_type == 'game_win':
+                for idx in data.condition:
+                    cells[idx].className += " winning"
+        text = f"{winner} Wins!" if winner and winner != 'TIE' else "It's a Tie!"
+        js.setTimeout(create_proxy(lambda: show_celebration(text)), 500)
+    
+    elif msg_type == 'opponent_disconnected':
+        game_active = False
+        show_celebration("Opponent disconnected!")
+
+# --- Timers ---
+
+def cancel_timers():
+    global move_timer_handle
+    if move_timer_handle:
+        js.clearTimeout(move_timer_handle)
+        move_timer_handle = None
+
+def update_move_timer(remaining):
+    global move_timer_handle
+    if move_timer_handle:
+        js.clearTimeout(move_timer_handle)
+    if remaining > 0 and game_active:
+        if mode == 'online':
+            text = f"Your turn ({my_player_symbol}) - {remaining}s" if is_my_turn else "Opponent's turn"
+        else:
+            text = f"{current_player}'s turn - {remaining}s"
+        status_text.textContent = text
+        move_timer_handle = js.setTimeout(
+            create_proxy(lambda: update_move_timer(remaining - 1)),
+            1000
+        )
+
+def start_move_timer():
+    if game_active and (mode != 'online' or is_my_turn):
+        update_move_timer(30)
+
+# --- UI helpers ---
+
+def set_player_labels():
+    if mode == 'online':
+        x_label.textContent = "You (X)" if my_player_symbol == 'X' else "Friend (X)"
+        o_label.textContent = "You (O)" if my_player_symbol == 'O' else "Friend (O)"
+        game_title.textContent = "Online vs Friend"
+    elif mode == 'single':
+        x_label.textContent = "You (X)"
+        o_label.textContent = "Computer (O)"
+        game_title.textContent = "You vs Computer"
+    else:
+        x_label.textContent = "Player 1 (X)"
+        o_label.textContent = "Player 2 (O)"
+        game_title.textContent = "Two Players"
+
+def switch_screen(target):
+    mode_selection_screen.className = "screen"
+    matchmaking_screen.className = "screen"
+    game_screen.className = "screen"
+    cancel_timers()
+    if target == 'mode_selection':
+        mode_selection_screen.className = "screen active"
+    elif target == 'matchmaking':
+        matchmaking_screen.className = "screen active"
+        matchmaking_status.textContent = "Ready to connect..."
+        game_code_input.disabled = False
+        document.getElementById("connectBtn").disabled = False
+    elif target == 'game':
+        game_screen.className = "screen active"
+
+def update_scores():
+    document.getElementById("xScore").textContent = str(scores["X"])
+    document.getElementById("oScore").textContent = str(scores["O"])
+    document.getElementById("tieScore").textContent = str(scores["TIE"])
+
+def set_turn_display():
+    if not game_active:
+        return
+    if mode == 'single' and current_player == 'O':
+        status_text.textContent = "Computer's turn"
+        turn_indicator.className = "turn-indicator o-turn"
+    elif mode == 'online':
+        if is_my_turn:
+            status_text.textContent = f"Your turn ({my_player_symbol})"
+            turn_indicator.className = f"turn-indicator {my_player_symbol.lower()}-turn"
+        else:
+            status_text.textContent = "Opponent's turn"
+            other = 'O' if my_player_symbol == 'X' else 'X'
+            turn_indicator.className = f"turn-indicator {other.lower()}-turn"
+    elif current_player == 'X':
+        status_text.textContent = "Player 1's turn (X)"
+        turn_indicator.className = "turn-indicator x-turn"
+    else:
+        status_text.textContent = "Player 2's turn (O)"
+        turn_indicator.className = "turn-indicator o-turn"
+
+def show_thinking(show):
+    thinking_animation.className = "thinking-animation" if show else "thinking-animation hidden"
+
+def show_celebration(message):
+    celebration_div.innerHTML = f"""
+        <div class="celebration-content">
+            <i class="fas fa-trophy celebration-icon"></i>
+            <h2>{message}</h2>
+            <div class="action-buttons" style="margin-top: 20px;">
+                <button id="nextRoundBtn" class="action-btn new-game" style="margin: 0;">Next Round</button>
+            </div>
+            <div class="confetti">
+                <div class="confetti-piece"></div>
+                <div class="confetti-piece"></div>
+                <div class="confetti-piece"></div>
+                <div class="confetti-piece"></div>
+                <div class="confetti-piece"></div>
+            </div>
+        </div>
+    """
+    document.getElementById("nextRoundBtn").addEventListener("click", create_proxy(start_new_game))
+    celebration_div.className = "celebration"
+
+def hide_celebration():
+    celebration_div.className = "celebration hidden"
+
+def reset_board_ui():
+    for i in range(9):
+        cells[i].textContent = ""
+        cells[i].className = "cell"
+        cells[i].disabled = False
+
+def start_new_game(event=None):
+    global board, current_player, game_active, is_my_turn
+    hide_celebration()
+    reset_board_ui()
+    board = [""] * 9
+    current_player = "X"
+    game_active = True
+    set_player_labels()
+    cancel_timers()
+    if mode == 'online':
+        is_my_turn = (current_player == my_player_symbol)
+        if is_my_turn:
+            start_move_timer()
+    elif mode == 'local':
+        start_move_timer()
+    set_turn_display()
+    if mode == 'single' and current_player == 'O':
+        js.setTimeout(create_proxy(computer_move), 1000)
+
+def reset_all_scores(event=None):
+    global scores
+    scores = {"X": 0, "O": 0, "TIE": 0}
+    update_scores()
+    start_new_game()
+
+def select_mode(selected_mode):
+    global mode, game_active
+    mode = selected_mode
+    game_active = True
+    set_player_labels()
+    switch_screen('game')
+    reset_all_scores()
+
+# --- Game logic (local / single) ---
+
+def check_win_local():
+    global game_active
+    for condition in WINNING_CONDITIONS:
+        a, b, c = condition
+        if board[a] and board[a] == board[b] and board[a] == board[c]:
+            game_active = False
+            winner = board[a]
+            scores[winner] += 1
+            update_scores()
+            for index in condition:
+                cells[index].className += " winning"
+            js.setTimeout(create_proxy(lambda: show_celebration(f"{winner} Wins!")), 500)
+            return True
+    if "" not in board:
+        game_active = False
+        scores["TIE"] += 1
+        update_scores()
+        js.setTimeout(create_proxy(lambda: show_celebration("It's a Tie!")), 500)
+        return True
+    return False
+
+def next_turn():
+    global current_player
+    if not game_active:
+        return
+    current_player = "O" if current_player == "X" else "X"
+    set_turn_display()
+    if mode == 'single' and current_player == 'O':
+        js.setTimeout(create_proxy(computer_move), 1000)
+    elif mode == 'local':
+        start_move_timer()
+
+def handle_cell_click(event):
+    global board, game_active, current_player
+    if not game_active:
+        return
+    target = event.currentTarget
+    clicked_index = int(target.getAttribute('data-index'))
+    if board[clicked_index] != "":
+        return
+    player_to_move = current_player
+    if mode == 'online':
+        if not is_my_turn or player_to_move != my_player_symbol:
+            return
+        board[clicked_index] = player_to_move
+        target.textContent = player_to_move
+        target.className += f" {player_to_move.lower()}"
+        target.disabled = True
+        cancel_timers()
+        asyncio.ensure_future(send_to_server('game_move', {
+            'code': room_code,
+            'index': clicked_index,
+            'player': player_to_move
+        }))
+    else:
+        board[clicked_index] = player_to_move
+        target.textContent = player_to_move
+        target.className += f" {player_to_move.lower()}"
+        target.disabled = True
+        if not check_win_local():
+            next_turn()
+
+def make_opponent_move(index, player):
+    global board
+    if board[index] != "":
+        return
+    board[index] = player
+    cell = cells[index]
+    cell.textContent = player
+    cell.className += f" {player.lower()}"
+    cell.disabled = True
+
+# --- Computer AI ---
+
+def get_empty_cells():
+    return [i for i, val in enumerate(board) if val == ""]
+
+def computer_move():
+    show_thinking(True)
+    js.setTimeout(create_proxy(execute_ai_move), 500)
+
+def execute_ai_move():
+    empty_cells = get_empty_cells()
+    def find_best_move(player):
+        for i in empty_cells:
+            board[i] = player
+            for condition in WINNING_CONDITIONS:
+                a, b, c = condition
+                if board[a] == board[b] == board[c] == player:
+                    board[i] = ''
+                    return i
+            board[i] = ''
+        return None
+    move = find_best_move('O')
+    if move is not None:
+        make_move(move, 'O')
+        show_thinking(False)
+        return
+    move = find_best_move('X')
+    if move is not None:
+        make_move(move, 'O')
+        show_thinking(False)
+        return
+    if 4 in empty_cells:
+        make_move(4, 'O')
+        show_thinking(False)
+        return
+    corners = [0, 2, 6, 8]
+    available_corners = [c for c in corners if c in empty_cells]
+    if available_corners:
+        move_index = random.choice(available_corners)
+        make_move(move_index, 'O')
+        show_thinking(False)
+        return
+    if empty_cells:
+        move_index = random.choice(empty_cells)
+        make_move(move_index, 'O')
+    show_thinking(False)
+
+def make_move(index, player):
+    global board
+    board[index] = player
+    cell = cells[index]
+    cell.textContent = player
+    cell.className += f" {player.lower()}"
+    cell.disabled = True
+    if not check_win_local():
+        next_turn()
+
+# --- Matchmaking ---
+
+async def start_matchmaking_async():
+    global room_code
+    code_str = game_code_input.value
+    if not code_str:
+        matchmaking_status.textContent = "Enter a code!"
+        return
+    try:
+        code = int(code_str)
+    except ValueError:
+        matchmaking_status.textContent = "Code must be a number!"
+        return
+    if code < 0 or code > 100:
+        matchmaking_status.textContent = "Code must be 0-100!"
+        return
+    document.getElementById("connectBtn").disabled = True
+    game_code_input.disabled = True
+    matchmaking_status.textContent = "Connecting..."
+    if not await connect_websocket():
+        matchmaking_status.textContent = "Connection failed!"
+        document.getElementById("connectBtn").disabled = False
+        game_code_input.disabled = False
+        return
+    room_code = str(code)
+    if code == 0:
+        matchmaking_status.textContent = "Creating room..."
+        await send_to_server('create_room', {})
+    else:
+        matchmaking_status.textContent = f"Joining room {code}..."
+        await send_to_server('join_room', {'code': code})
+
+def start_matchmaking(event):
+    asyncio.ensure_future(start_matchmaking_async())
+
+def setup_event_listeners():
+    document.getElementById("singlePlayerBtn").addEventListener(
+        "click", create_proxy(lambda e: select_mode('single')))
+    document.getElementById("onlineFriendBtn").addEventListener(
+        "click", create_proxy(lambda e: switch_screen('matchmaking')))
+    document.getElementById("localTwoPlayerBtn").addEventListener(
+        "click", create_proxy(lambda e: select_mode('local')))
+    document.getElementById("connectBtn").addEventListener(
+        "click", create_proxy(start_matchmaking))
+    document.getElementById("matchmakingBackBtn").addEventListener(
+        "click", create_proxy(lambda e: switch_screen('mode_selection')))
+    document.getElementById("backBtn").addEventListener(
+        "click", create_proxy(lambda e: switch_screen('mode_selection')))
+    document.getElementById("newGameBtn").addEventListener(
+        "click", create_proxy(start_new_game))
+    document.getElementById("resetScoresBtn").addEventListener(
+        "click", create_proxy(reset_all_scores))
+    for cell in cells:
+        cell.addEventListener("click", create_proxy(handle_cell_click))
+
+setup_event_listeners()
+update_scores()
+print("Tic-Tac-Toe loaded!")
+        `;
+
         async function loadGame() {
             try {
                 let pyodide = await loadPyodide();
-
-                const response = await fetch('main.py');
-                const pythonCode = await response.text();
-
                 await pyodide.runPythonAsync(pythonCode);
-
-                console.log("Game loaded successfully!");
+                console.log("Game initialized successfully!");
             } catch (error) {
                 console.error("Error loading game:", error);
-                alert("Error loading game. Please check the console for details.");
+                alert("Error: Check console for details");
             }
         }
 
         window.addEventListener('load', loadGame);
     </script>
 </body>
-
 </html>
