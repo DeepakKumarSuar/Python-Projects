@@ -51,7 +51,7 @@ async def connect_websocket():
     if ws and ws.readyState == 1:
         return ws
 
-    url = "wss://web-production-08d84.up.railway.app"
+    url = "wss://web-production-08d84.up.railway.app:8080"
 
     ws = js.WebSocket.new(url)
 
@@ -570,6 +570,7 @@ def setup_event_listeners():
 setup_event_listeners()
 update_scores()
 print("Tic-Tac-Toe loaded successfully!")
+
 
 
 
