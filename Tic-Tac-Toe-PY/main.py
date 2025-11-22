@@ -520,9 +520,9 @@ async def start_matchmaking_async():
         matchmaking_status.textContent = "Error: Code must be a number."
         return
     
-    if code < 0 or code > 100:
+    if code < 0 or code > 100000000:
         # Using the game code as a request type (join/create) is clearer with WebSockets
-        js.alert("Please use a code between 0 and 100.")
+        js.alert("Please use a code between 0 and 10000000.")
         return
     
     document.getElementById("connectBtn").disabled = True
@@ -570,6 +570,7 @@ def setup_event_listeners():
 setup_event_listeners()
 update_scores()
 print("Tic-Tac-Toe loaded successfully!")
+
 
 
 
