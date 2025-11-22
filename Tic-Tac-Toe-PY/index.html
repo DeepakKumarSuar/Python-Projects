@@ -666,7 +666,7 @@ async def connect_websocket():
         return ws
     
     # Railway WebSocket URL (no /play)
-    url = "wss://web-production-08d84.up.railway.app"
+    url = "wss://web-production-08d84.up.railway.app:8080"
     ws = js.WebSocket.new(url)
     
     retry = 0
@@ -1117,3 +1117,4 @@ print("Tic-Tac-Toe loaded!")
     </script>
 </body>
 </html>
+
