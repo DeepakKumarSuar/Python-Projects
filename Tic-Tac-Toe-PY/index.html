@@ -1055,8 +1055,8 @@ async def start_matchmaking_async():
     except ValueError:
         matchmaking_status.textContent = "Code must be a number!"
         return
-    if code < 0 or code > 100:
-        matchmaking_status.textContent = "Code must be 0-100!"
+    if code < 0 or code > 10000000:
+        matchmaking_status.textContent = "Code must be 0-10000000!"
         return
     document.getElementById("connectBtn").disabled = True
     game_code_input.disabled = True
@@ -1117,4 +1117,5 @@ print("Tic-Tac-Toe loaded!")
     </script>
 </body>
 </html>
+
 
