@@ -34,7 +34,6 @@ status_text = document.getElementById("statusText")
 turn_indicator = document.getElementById("turnIndicator")
 thinking_animation = document.getElementById("thinkingAnimation")
 celebration_div = document.getElementById("celebration")
-wait_timer_display = document.getElementById("waitTimer") # Retained for matchmaking display
 
 # Winning combinations
 WINNING_CONDITIONS = [
@@ -156,7 +155,6 @@ def cancel_timers():
     if move_timer_handle:
         js.clearTimeout(move_timer_handle)
         move_timer_handle = None
-    wait_timer_display.textContent = ""
 
 def update_move_timer(remaining_seconds):
     global move_timer_handle
