@@ -44,17 +44,55 @@
                 <button id="matchmakingBackBtn" class="back-btn">
                     <i class="fas fa-arrow-left"></i> Back
                 </button>
-                <h1>Connect to a Friend</h1>
+                <h1>Play with a Friend</h1>
                 <div class="spacer"></div>
             </div>
             <p style="margin-bottom: 20px; color: #666;">
-                Enter 0 - 100 to create a room, or enter your friend's code to join.
+                Create a room and share the code with your friend, or join their room.
             </p>
-            <input type="number" id="gameCodeInput" placeholder="Enter code (0-100)" min="0" max="100">
-            <button id="connectBtn" class="action-btn new-game" style="width: 100%; margin-bottom: 15px;">
-                <i class="fas fa-handshake"></i> Connect
-            </button>
-            <div id="matchmakingStatus" style="font-weight: 600; color: #3b82f6;">Ready to connect...</div>
+
+            <div id="roomChoice">
+                <button id="createRoomBtn" class="action-btn new-game" style="width: 100%; margin-bottom: 15px;">
+                    <i class="fas fa-plus"></i> Create Room
+                </button>
+                <button id="joinRoomBtn" class="action-btn new-game" style="width: 100%; margin-bottom: 15px;">
+                    <i class="fas fa-sign-in-alt"></i> Join Room
+                </button>
+            </div>
+
+            <div id="createRoomPanel" class="hidden">
+                <div class="room-code-display">
+                                        <div class="room-code-label">Room Code</div>
+                    <div id="roomCodeDisplay">
+                        ------
+                    </div>
+                </div>
+
+                <div class="invite-link-box">
+                                        <div class="invite-link-label">Invite Link</div>
+                    <div id="inviteLinkDisplay"></div>
+                </div>
+
+                <button id="copyLinkBtn" class="action-btn new-game">
+                    <i class="fas fa-copy"></i> Copy Link
+                </button>
+
+                <div id="matchmakingStatus">
+                    Creating room...
+                </div>
+            </div>
+
+            <div id="joinRoomPanel" class="hidden">
+                <input type="text" id="gameCodeInput" placeholder="Enter room code" maxlength="6" autocomplete="off" spellcheck="false" style="text-transform: uppercase;">
+
+                <button id="connectBtn" class="action-btn new-game">
+                    <i class="fas fa-sign-in-alt"></i> Join Room
+                </button>
+
+                <div id="joinStatus">
+                    Enter your friend's room code.
+                </div>
+            </div>
         </div>
     </div>
 
@@ -103,13 +141,21 @@
                 <button class="cell" data-index="8"></button>
             </div>
 
-            <div class="action-buttons">
-                <button id="newGameBtn" class="action-btn new-game">
-                    <i class="fas fa-redo"></i> New Game
-                </button>
-                <button id="resetScoresBtn" class="action-btn reset-scores">
-                    Reset Scores
-                </button>
+            <button id="chatToggle" class="chat-toggle hidden" aria-label="Open chat" title="Chat">
+                <i class="fas fa-comments"></i>
+                <span id="chatBadge" class="chat-badge"></span>
+            </button>
+            <div id="onlineChat" class="online-chat hidden">
+                <div class="chat-title"><i class="fas fa-comments"></i> Chat <button id="closeChatBtn" class="chat-close" type="button">×</button></div>
+                <div id="chatMessages" class="chat-messages"></div>
+                <div class="chat-input-row">
+                    <input id="chatInput" type="text" maxlength="300" placeholder="Type a message..." autocomplete="off">
+                    <button id="sendChatBtn" class="action-btn new-game"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+            <div id="localActions" class="action-buttons">
+                <button id="newGameBtn" class="action-btn new-game"><i class="fas fa-redo"></i> New Game</button>
+                <button id="resetScoresBtn" class="action-btn reset-scores">Reset Scores</button>
             </div>
         </div>
     </div>
@@ -130,7 +176,7 @@
     <script>
         async function loadGame() {
             try {
-                const pythonCode = await fetch("main.py?v=2").then(response => {
+                const pythonCode = await fetch("main.py?v=11").then(response => {
                     if (!response.ok) {
                         throw new Error(`Failed to load main.py: ${response.status}`);
                     }
@@ -150,4 +196,7 @@
     </script>
 </body>
 </html>
+
+
+
 

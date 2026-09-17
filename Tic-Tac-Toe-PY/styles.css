@@ -1,4 +1,4 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+﻿* { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -7,6 +7,10 @@
         }
 
         /* Screen Management */
+        .hidden {
+            display: none !important;
+        }
+
         .screen {
             display: none;
             min-height: 100vh;
@@ -413,6 +417,77 @@
             font-size: 1rem;
         }
 
+        /* Online Room UI */
+        .room-code-display {
+            margin-bottom: 22px;
+        }
+
+        .room-code-label,
+        .invite-link-label {
+            color: #e5e7eb;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        #roomCodeDisplay {
+            color: #60a5fa;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(96, 165, 250, 0.35);
+            border-radius: 12px;
+            padding: 12px 18px;
+            font-size: 28px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-align: center;
+        }
+
+        .invite-link-box {
+            margin-bottom: 18px;
+        }
+
+        #inviteLinkDisplay {
+            color: #f3f4f6 !important;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 10px 12px;
+            font-size: 13px !important;
+            line-height: 1.5;
+            word-break: break-all;
+            text-align: left;
+        }
+
+        #matchmakingStatus,
+        #joinStatus {
+            color: #93c5fd !important;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        #gameCodeInput {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 13px 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            font-size: 1rem;
+            text-align: center;
+            letter-spacing: 2px;
+            outline: none;
+        }
+
+        #gameCodeInput::placeholder {
+            color: #a1a1aa;
+            letter-spacing: normal;
+        }
+
+        #gameCodeInput:focus {
+            border-color: #60a5fa;
+            box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+        }
         /* Animations */
         @keyframes cellPulse {
             0% { transform: scale(1); }
@@ -487,3 +562,53 @@
             }
             .game-board { gap: 8px; }
         }
+
+
+
+.online-chat { margin-top: 22px; width: 100%; max-width: 520px; }
+.online-chat.hidden { display: none; }
+.chat-title { font-weight: 700; margin-bottom: 8px; color: #333; }
+.chat-messages { height: 130px; overflow-y: auto; background: rgba(255,255,255,.65); border-radius: 12px; padding: 10px; text-align: left; }
+.chat-message { margin: 5px 0; padding: 7px 10px; border-radius: 9px; background: rgba(110,90,220,.12); word-break: break-word; }
+.chat-input-row { display: flex; gap: 8px; margin-top: 8px; }
+.chat-input-row input { flex: 1; min-width: 0; border: 1px solid #bbb; border-radius: 10px; padding: 10px; font: inherit; }
+.chat-input-row button { margin: 0; min-width: 48px; }
+
+
+/* Floating online chat */
+.chat-toggle {
+    position: fixed; right: 28px; bottom: 28px; width: 62px; height: 62px;
+    border: 0; border-radius: 50%; background: #3b82f6; color: white;
+    box-shadow: 0 8px 24px rgba(0,0,0,.28); cursor: pointer; z-index: 1000;
+    font-size: 1.45rem; transition: transform .2s, background .2s;
+}
+.chat-toggle:hover { transform: translateY(-3px) scale(1.04); }
+.chat-toggle.hidden { display: none; }
+.chat-toggle.has-new-message { animation: chatPulse 1s ease-in-out 3; background: #ef4444; }
+.chat-badge { position: absolute; right: -2px; top: -3px; min-width: 21px; height: 21px;
+    border-radius: 50%; background: #ef4444; color: white; font-size: 12px;
+    display: flex; align-items: center; justify-content: center; font-weight: 700; }
+.online-chat { position: fixed; right: 28px; bottom: 102px; width: 320px; max-width: calc(100vw - 32px);
+    margin: 0; padding: 12px; background: rgba(255,255,255,.96); border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.3); z-index: 999; }
+.online-chat.hidden { display: none; }
+.chat-title { display:flex; align-items:center; justify-content:space-between; margin-bottom: 8px; }
+.chat-close { border:0; background:transparent; font-size:24px; cursor:pointer; color:#555; }
+.chat-messages { height: 220px; overflow-y:auto; background:#f5f5f5; border-radius:12px; padding:10px; display:flex; flex-direction:column; gap:7px; }
+.chat-message { max-width: 82%; padding:8px 10px; border-radius:12px; word-break:break-word; box-shadow:0 1px 2px rgba(0,0,0,.08); }
+.chat-message.own { align-self:flex-end; background:#d7f8c6; border-bottom-right-radius:3px; }
+.chat-message.opponent { align-self:flex-start; background:#fff; border-bottom-left-radius:3px; }
+.chat-message-body { font-size:14px; color:#222; }
+.chat-time { display:block; text-align:right; margin-top:3px; font-size:10px; color:#777; }
+@keyframes chatPulse { 0%,100% { transform:scale(1); } 50% { transform:scale(1.12); } }
+@media (max-width: 600px) { .chat-toggle { right:18px; bottom:18px; } .online-chat { right:16px; bottom:92px; } }
+
+
+/* Online chat stays inside the game card instead of floating over the page. */
+.game-container { position: relative; }
+.chat-toggle { position: absolute; right: 24px; bottom: 24px; }
+.online-chat { position: absolute; right: 24px; bottom: 96px; }
+@media (max-width: 600px) {
+    .chat-toggle { right: 16px; bottom: 16px; }
+    .online-chat { right: 16px; bottom: 88px; width: min(320px, calc(100% - 32px)); }
+}
